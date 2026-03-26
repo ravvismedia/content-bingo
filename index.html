@@ -241,7 +241,7 @@ body::before { content: ''; position: fixed; top: -10%; left: 50%; transform: tr
 <script>
 var LOGO_SRC = document.querySelector('.nav-logo img').src;
 
-var WEBHOOK = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
+var WEBHOOK = "https://script.google.com/macros/s/AKfycbzmqUkxJ1VtAvqAQ8uYXQBMuEPjTy-PFoMuNWhV0sl1jPWIpv-5bcJNsu7Az-l7slwa/exec";
 
 var CONFIG = {
   month: "April 2025",
@@ -425,7 +425,7 @@ function checkout() {
 }
 
 function logEvent(data) {
-  if (WEBHOOK === "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") return;
+  if (WEBHOOK === "https://script.google.com/macros/s/AKfycbzmqUkxJ1VtAvqAQ8uYXQBMuEPjTy-PFoMuNWhV0sl1jPWIpv-5bcJNsu7Az-l7slwa/exec") return;
   fetch(WEBHOOK, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) }).catch(function(e) { console.warn('log error', e); });
 }
 
