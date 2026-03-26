@@ -45,6 +45,10 @@ body::before { content: ""; position: fixed; top: -10%; left: 50%; transform: tr
 .field input { background: var(--black); border: 1px solid var(--bdr); border-radius: 10px; padding: 0.82rem 1rem; color: var(--white); font-family: "Urbanist", sans-serif; font-size: 0.93rem; outline: none; transition: border 0.2s, box-shadow 0.2s; }
 .field input:focus { border-color: var(--dp); box-shadow: 0 0 0 3px rgba(7,79,94,0.25); }
 .field input::placeholder { color: #1e4a55; }
+.phone-wrap { display: flex; gap: 0.5rem; }
+.phone-wrap select { background: var(--black); border: 1px solid var(--bdr); border-radius: 10px; padding: 0.82rem 0.6rem; color: var(--white); font-family: "Urbanist", sans-serif; font-size: 0.88rem; outline: none; transition: border 0.2s, box-shadow 0.2s; cursor: pointer; flex-shrink: 0; width: 110px; }
+.phone-wrap select:focus { border-color: var(--dp); box-shadow: 0 0 0 3px rgba(7,79,94,0.25); }
+.phone-wrap input { flex: 1; }
 .btn-main { width: 100%; background: var(--dp); color: var(--white); border: none; border-radius: 10px; padding: 0.95rem; font-family: "Urbanist", sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; letter-spacing: 0.02em; margin-top: 0.4rem; transition: background 0.2s, transform 0.15s, box-shadow 0.2s; }
 .btn-main:hover { background: #0a6070; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(7,79,94,0.4); }
 .btn-main:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
@@ -171,6 +175,33 @@ body::before { content: ""; position: fixed; top: -10%; left: 50%; transform: tr
       <div class="field">
         <label>Email Address</label>
         <input type="email" id="reg-email" placeholder="you@email.com"/>
+      </div>
+      <div class="field">
+        <label>Phone Number</label>
+        <div class="phone-wrap">
+          <select id="reg-code">
+            <option value="+233">🇬🇭 +233</option>
+            <option value="+234">🇳🇬 +234</option>
+            <option value="+254">🇰🇪 +254</option>
+            <option value="+27">🇿🇦 +27</option>
+            <option value="+255">🇹🇿 +255</option>
+            <option value="+256">🇺🇬 +256</option>
+            <option value="+225">🇨🇮 +225</option>
+            <option value="+221">🇸🇳 +221</option>
+            <option value="+237">🇨🇲 +237</option>
+            <option value="+251">🇪🇹 +251</option>
+            <option value="+20">🇪🇬 +20</option>
+            <option value="+212">🇲🇦 +212</option>
+            <option value="+44">🇬🇧 +44</option>
+            <option value="+1">🇺🇸 +1</option>
+            <option value="+49">🇩🇪 +49</option>
+            <option value="+33">🇫🇷 +33</option>
+            <option value="+91">🇮🇳 +91</option>
+            <option value="+971">🇦🇪 +971</option>
+            <option value="+966">🇸🇦 +966</option>
+          </select>
+          <input type="tel" id="reg-phone" placeholder="024 000 0000"/>
+        </div>
       </div>
       <button class="btn-main" id="reg-btn" onclick="register()">Get My Bingo Card &rarr;</button>
     </div>
@@ -301,15 +332,22 @@ var LINES = [
 function register() {
   var nick  = document.getElementById("reg-nick").value.trim();
   var email = document.getElementById("reg-email").value.trim();
+  var code  = document.getElementById("reg-code").value;
+  var phone = document.getElementById("reg-phone").value.trim();
   if (!nick || !email || email.indexOf("@") === -1) {
-    showToast("Please fill in both fields");
+    showToast("Please fill in your name and email");
     return;
   }
+  if (!phone) {
+    showToast("Please enter your phone number");
+    return;
+  }
+  var fullPhone = code + phone.replace(/\s+/g, "");
   var btn = document.getElementById("reg-btn");
   btn.disabled    = true;
   btn.textContent = "Loading...";
-  user = { email: email, nickname: nick };
-  saveToGithub({ event: "registration", email: email, nickname: nick, month: CONFIG.month, timestamp: ts() });
+  user = { email: email, nickname: nick, phone: fullPhone };
+  saveToGithub({ event: "registration", email: email, nickname: nick, phone: fullPhone, month: CONFIG.month, timestamp: ts() });
   document.getElementById("reg-screen").style.display = "none";
   document.getElementById("app-screen").style.display = "block";
   document.getElementById("user-name").textContent    = nick;
